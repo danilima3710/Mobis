@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="@color/white"/>
+    <corners android:bottomLeftRadius="90dp"/>
+    <gradient
+        android:startColor="@color/top_orange_login"
+        android:endColor="@color/buttom_orange_login"
+        android:centerColor="@color/medium_orange_login"
+        android:angle="90"
+        />
+
+    <stroke android:color="@color/gray"/>
+</shape>
