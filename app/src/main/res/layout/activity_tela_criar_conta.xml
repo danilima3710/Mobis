@@ -77,7 +77,7 @@
         android:id="@+id/buttonCadastrar"
         style="@style/button_login"
         android:layout_marginTop="52dp"
-        android:text="Entrar"
+        android:text="Cadastrar"
         android:textAllCaps="false"
         android:textColor="@color/white"
         android:textSize="18sp"

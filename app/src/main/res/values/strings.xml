@@ -1,3 +1,16 @@
 <resources>
     <string name="app_name">Mobis</string>
+    <string name="title_activity_tela_principal2">TelaPrincipal2</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="menu_passageiro">Passageiro</string>
+    <string name="menu_movimentacao">Movimentação</string>
+    <string name="menu_viagem">Viagem</string>
+    <string name="menu_configuracao">Configuração</string>
+    <string name="title_activity_tela_principal">TelaPrincipal</string>
 </resources>
