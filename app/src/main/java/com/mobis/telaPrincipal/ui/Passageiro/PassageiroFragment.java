@@ -1,5 +1,6 @@
 package com.mobis.telaPrincipal.ui.Passageiro;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,7 +14,9 @@ import androidx.lifecycle.ViewModelProvider;
 import com.mobis.apresentaMensagem.ApresentaMensagem;
 import com.mobis.databinding.FragmentPassageiroBinding;
 import com.mobis.enumeradores.EnumCadastros;
+import com.mobis.login.TelaLogin;
 import com.mobis.models.Passageiro;
+import com.mobis.telaPrincipal.TelaPrincipal;
 
 import java.util.UUID;
 
@@ -28,10 +31,8 @@ public class PassageiroFragment extends Fragment {
         binding.fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Passageiro passageiro = new Passageiro(UUID.randomUUID().toString(), "Laura", "47 1234-1234", EnumCadastros.enumSexo.FEMININO);
-                passageiro.salvar();
-
-                ApresentaMensagem.ApresentaMensagemRapida(view, passageiro.getId().toString());
+                Intent intent = new Intent(getActivity(), TelaCriarPassageiro.class);
+                startActivity(intent);
             }
         });
 

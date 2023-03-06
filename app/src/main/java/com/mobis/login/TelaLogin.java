@@ -48,6 +48,10 @@ public class TelaLogin extends AppCompatActivity {
         btn_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                //Remover essa linha
+                telaPrincipal();
+
                 String email = edit_email.getText().toString();
                 String senha = edit_senha.getText().toString();
 

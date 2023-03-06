@@ -38,7 +38,6 @@
         android:textColor="@color/white"
         android:text="Criar Conta"
         android:textSize="25sp"
-        android:textStyle="bold"
         />
 
     <EditText

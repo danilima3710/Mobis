@@ -13,4 +13,12 @@
     <string name="menu_viagem">Viagem</string>
     <string name="menu_configuracao">Configuração</string>
     <string name="title_activity_tela_principal">TelaPrincipal</string>
+    
+    <string-array name="Sexo">
+        <item>Sexo...</item>
+        <item>Masculino</item>
+        <item>Feminino</item>
+        <item>Indefinido</item>
+        <item>Outro</item>
+    </string-array>
 </resources>

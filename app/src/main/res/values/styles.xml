@@ -45,4 +45,7 @@
         <item name="backgroundTint">@color/buttom_orange_login</item>
     </style>
     
+    <style name="text_spinner">
+        <item name="android:textSize">30sp</item>
+    </style>
 </resources>
