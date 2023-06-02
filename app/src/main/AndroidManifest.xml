@@ -12,6 +12,12 @@
         android:theme="@style/Theme.Mobis"
         tools:targetApi="31">
         <activity
+            android:name=".telaPrincipal.ui.Movimentacao.TelaCriarMovimentacao"
+            android:exported="false" />
+        <activity
+            android:name=".telaPrincipal.ui.Viagem.TelaCriarViagem"
+            android:exported="false" />
+        <activity
             android:name=".telaPrincipal.ui.Passageiro.TelaCriarPassageiro"
             android:exported="false" />
         <activity

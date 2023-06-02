@@ -4,44 +4,61 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".telaPrincipal.ui.Passageiro.TelaCriarPassageiro">
+    tools:context=".telaPrincipal.ui.Movimentacao.TelaCriarMovimentacao">
 
     <EditText
-        android:id="@+id/txt_nome"
+        android:id="@+id/txt_data_movimentacao"
         style="@style/edit_login"
-        app:layout_constraintTop_toTopOf="parent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="44dp"
+        android:hint="Data"
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
-        android:hint="Nome"
-        android:layout_marginTop="600px"
-        tools:ignore="MissingConstraints"></EditText>
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="40dp"></EditText>
 
     <EditText
-        android:id="@+id/txt_telefone"
+        android:id="@+id/txt_valor_movimentacao"
         style="@style/edit_login"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:hint="Telefone"
+        android:hint="Valor"
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txt_nome"
-        tools:ignore="MissingConstraints"></EditText>
+        app:layout_constraintTop_toBottomOf="@+id/txt_data_movimentacao"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="40dp"></EditText>
+
+    <EditText
+        android:id="@+id/txt_descricao_movimentacao"
+        style="@style/edit_login"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:hint="Descrição"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txt_valor_movimentacao"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="40dp"></EditText>
 
     <Spinner
-        android:id="@+id/spn_sexo"
+        android:id="@+id/spn_movimentacao"
         style="@style/text_spinner"
         android:drawableRight="@drawable/ic_arrow_down"
         android:layout_width="310dp"
         android:layout_height="60dp"
         android:layout_marginTop="10dp"
-        app:layout_constraintStart_toStartOf="@+id/txt_telefone"
-        app:layout_constraintEnd_toEndOf="@+id/txt_telefone"
-        app:layout_constraintTop_toBottomOf="@+id/txt_telefone"
+        app:layout_constraintStart_toStartOf="@+id/txt_descricao_movimentacao"
+        app:layout_constraintEnd_toEndOf="@+id/txt_descricao_movimentacao"
+        app:layout_constraintTop_toBottomOf="@+id/txt_descricao_movimentacao"
         android:background="@drawable/border_spinner"
         ></Spinner>
 
@@ -54,8 +71,8 @@
         android:textAllCaps="false"
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/spn_sexo"
-        app:layout_constraintEnd_toEndOf="@+id/spn_sexo"
+        app:layout_constraintStart_toStartOf="@+id/spn_movimentacao"
+        app:layout_constraintEnd_toEndOf="@+id/spn_movimentacao"
         android:layout_marginBottom="20dp"
         tools:ignore="MissingConstraints"
         />

@@ -16,6 +16,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.mobis.R;
 import com.mobis.apresentaMensagem.ApresentaMensagem;
 import com.mobis.telaPrincipal.TelaPrincipal;
@@ -48,10 +49,6 @@ public class TelaLogin extends AppCompatActivity {
         btn_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                //Remover essa linha
-                telaPrincipal();
-
                 String email = edit_email.getText().toString();
                 String senha = edit_senha.getText().toString();
 
@@ -66,10 +63,12 @@ public class TelaLogin extends AppCompatActivity {
     }
 
     private void AutenticarUsuario(String email, String senha, View view) {
-        FirebaseAuth.getInstance().signInWithEmailAndPassword(email, senha).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+        firebaseAuth.signInWithEmailAndPassword(email, senha).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
+                    FirebaseUser user = firebaseAuth.getCurrentUser();
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
@@ -79,6 +78,7 @@ public class TelaLogin extends AppCompatActivity {
                 }
                 else {
                     ApresentaMensagem.ApresentaMensagemRapida(view, "Erro ao realizar o login");
+                    progressBar.setVisibility(View.INVISIBLE);
                 }
             }
         });

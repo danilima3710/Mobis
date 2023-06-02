@@ -7,7 +7,7 @@
     tools:context=".telaPrincipal.ui.Movimentacao.MovimentacaoFragment">
 
     <TextView
-        android:id="@+id/text_gallery"
+        android:id="@+id/textoCentral"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -26,5 +26,13 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         style="@style/button_add" />
+
+    <ListView
+        android:id="@+id/listViewMovimentacao"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:layout_editor_absoluteX="1dp"
+        tools:layout_editor_absoluteY="1dp"
+        tools:ignore="MissingConstraints"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

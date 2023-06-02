@@ -5,28 +5,37 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 
-import com.mobis.apresentaMensagem.ApresentaMensagem;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.mobis.R;
+import com.mobis.adapter.PassageiroAdapter;
 import com.mobis.databinding.FragmentPassageiroBinding;
-import com.mobis.enumeradores.EnumCadastros;
-import com.mobis.login.TelaLogin;
 import com.mobis.models.Passageiro;
-import com.mobis.telaPrincipal.TelaPrincipal;
 
-import java.util.UUID;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PassageiroFragment extends Fragment {
     FragmentPassageiroBinding binding;
-
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
+    ListView listView;
+    List<Passageiro> passageiroList;
+    TextView texto;
+    
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentPassageiroBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
+
+        iniciaComponentes();
 
         binding.fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -39,9 +48,64 @@ public class PassageiroFragment extends Fragment {
         return root;
     }
 
+    private void iniciaComponentes() {
+        listView = binding.listViewPassageiro;
+        texto = binding.textoCentral;
+        passageiroList = new ArrayList<>();
+
+        buscaPreencheRecycleView();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        buscaPreencheRecycleView();
+    }
+
+    private void buscaPreencheRecycleView() {
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+
+        reference.child("Passageiro").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                passageiroList.clear();
+
+                String idUsuario = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    Passageiro passageiro = dataSnapshot.getValue(Passageiro.class);
+
+                    if (passageiro.getIdUsuario().equals(idUsuario))
+                        passageiroList.add(passageiro);
+                }
+
+                escondeCampos();
+
+                PassageiroAdapter passageiroAdapter = new PassageiroAdapter(getContext(), R.layout.item_passageiro, passageiroList);
+                listView.setAdapter(passageiroAdapter);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
+    }
+
+    private void escondeCampos() {
+        if (passageiroList.isEmpty()) {
+            texto.setVisibility(View.VISIBLE);
+            listView.setVisibility(View.INVISIBLE);
+        } else {
+            texto.setVisibility(View.INVISIBLE);
+            listView.setVisibility(View.VISIBLE);
+        }
     }
 }

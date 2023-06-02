@@ -1,10 +1,6 @@
 package com.mobis.validacoes;
 
-import static com.mobis.enumeradores.EnumCampos.campos.CAMPO_CONFIRMA_SENHA;
-import static com.mobis.enumeradores.EnumCampos.campos.CAMPO_EMAIL;
-import static com.mobis.enumeradores.EnumCampos.campos.CAMPO_SENHA;
-import static com.mobis.enumeradores.EnumCampos.campos.CAMPO_VALIDO;
-import static com.mobis.enumeradores.EnumCampos.campos.TODOS_CAMPOS;
+import static com.mobis.enumeradores.EnumCampos.*;
 
 import com.mobis.enumeradores.EnumCampos;
 
@@ -13,18 +9,18 @@ public class ValidaCadastroUsuario {
         return senha.equals(confirmaSenha);
     }
 
-    public static EnumCampos.campos validaCamposPreenchidos (String email, String senha, String confirmaSenha) {
+    public static EnumCampos validaCamposPreenchidos (String email, String senha, String confirmaSenha) {
 
-        if (email.isEmpty() && senha.isEmpty() && confirmaSenha.isEmpty())
+        if (email.trim().isEmpty() && senha.trim().isEmpty() && confirmaSenha.trim().isEmpty())
             return TODOS_CAMPOS;
 
-        if (email.isEmpty())
+        if (email.trim().isEmpty())
             return CAMPO_EMAIL;
 
-        if (senha.isEmpty())
+        if (senha.trim().isEmpty())
             return CAMPO_SENHA;
 
-        if (confirmaSenha.isEmpty())
+        if (confirmaSenha.trim().isEmpty())
             return CAMPO_CONFIRMA_SENHA;
 
         return CAMPO_VALIDO;

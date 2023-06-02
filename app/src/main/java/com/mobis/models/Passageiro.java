@@ -1,16 +1,23 @@
 package com.mobis.models;
 
+import androidx.annotation.NonNull;
+
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.mobis.enumeradores.EnumCadastros;
+import com.google.firebase.database.ValueEventListener;
+import com.mobis.enumeradores.EnumSexo;
 
-import java.util.UUID;
+import java.util.ArrayList;
+import java.util.List;
 
-public class Passageiro {
+public class Passageiro extends ModelPadrao {
     private String id;
     private String nome;
     private String telefone;
-    private EnumCadastros.enumSexo sexo;
+    private EnumSexo sexo;
 
     public String getId() {
         return id;
@@ -36,23 +43,30 @@ public class Passageiro {
         this.telefone = telefone;
     }
 
-    public EnumCadastros.enumSexo getSexo() {
+    public EnumSexo getSexo() {
         return sexo;
     }
 
-    public void setSexo(EnumCadastros.enumSexo sexo) {
+    public void setSexo(EnumSexo sexo) {
         this.sexo = sexo;
     }
 
-    public Passageiro(String id, String nome, String telefone, EnumCadastros.enumSexo sexo) {
+    public Passageiro(String id, String nome, String telefone, EnumSexo sexo) {
         this.id = id;
         this.nome = nome;
         this.telefone = telefone;
         this.sexo = sexo;
     }
 
-    public void salvar() {
+    public Passageiro() {
+
+    }
+
+    public boolean salvar() {
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
-        reference.child("Passageiro").child(id.toString()).setValue(this);
+
+        Task task = reference.child("Passageiro").child(id.toString()).setValue(this);
+
+        return task.isSuccessful();
     }
 }

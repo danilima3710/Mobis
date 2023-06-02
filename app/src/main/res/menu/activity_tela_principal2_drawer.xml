@@ -16,10 +16,5 @@
             android:id="@+id/nav_viagem"
             android:icon="@drawable/ic_car"
             android:title="@string/menu_viagem" />
-        <item
-            android:id="@+id/nav_configuracao"
-            android:icon="@drawable/ic_configuracao"
-            android:title="@string/menu_configuracao" />
-
     </group>
 </menu>
