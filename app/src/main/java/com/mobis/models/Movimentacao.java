@@ -5,7 +5,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.mobis.enumeradores.EnumMovimentacao;
 
-public class Movimentacao extends ModelPadrao{
+import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
+
+public class Movimentacao extends ModelPadrao implements Serializable {
     String id;
     float valor;
     String dataMovimentacao;
@@ -69,6 +73,27 @@ public class Movimentacao extends ModelPadrao{
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
 
         Task task = reference.child("Movimentacao").child(id.toString()).setValue(this);
+
+        return task.isSuccessful();
+    }
+
+    public boolean editar() {
+        DatabaseReference registroRef = FirebaseDatabase.getInstance().getReference().child("Movimentacao").child(id);
+
+        Map<String, Object> atualizacoes = new HashMap<>();
+        atualizacoes.put("dataMovimentacao", dataMovimentacao);
+        atualizacoes.put("descricao"       , descricao       );
+        atualizacoes.put("tipoMovimentacao", tipoMovimentacao);
+        atualizacoes.put("valor"           , valor           );
+
+        Task task = registroRef.updateChildren(atualizacoes);
+
+        return task.isSuccessful();
+    }
+
+    public boolean remover() {
+        DatabaseReference registroRef = FirebaseDatabase.getInstance().getReference().child("Movimentacao").child(id);
+        Task task = registroRef.removeValue();
 
         return task.isSuccessful();
     }

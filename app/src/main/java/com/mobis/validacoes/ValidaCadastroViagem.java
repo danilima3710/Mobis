@@ -5,9 +5,14 @@ import static com.mobis.enumeradores.EnumErros.*;
 
 import com.mobis.enumeradores.EnumCampos;
 import com.mobis.enumeradores.EnumErros;
+import com.mobis.mascaras.DataHoraMascara;
 import com.mobis.models.Passageiro;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class ValidaCadastroViagem {
     public static EnumErros validaAdicionarPassageiro(List<Passageiro> passageiroList, Passageiro passageiroAtual) {
@@ -38,8 +43,8 @@ public class ValidaCadastroViagem {
         return false;
     }
 
-    public static EnumCampos validaCamposPreenchidos(String dataHora, String origem, String destino) {
-        if (dataHora.trim().isEmpty() && origem.trim().isEmpty() && destino.trim().isEmpty())
+    public static EnumCampos validaCamposPreenchidos(String dataHora, String origem, String destino, float valorPassageiro) {
+        if (dataHora.trim().isEmpty() && origem.trim().isEmpty() && destino.trim().isEmpty() && valorPassageiro == 0)
             return TODOS_CAMPOS;
 
         if (dataHora.trim().isEmpty())
@@ -51,6 +56,41 @@ public class ValidaCadastroViagem {
         if (destino.trim().isEmpty())
             return DESITNO;
 
+        if (valorPassageiro == 0)
+            return VALOR;
+
         return CAMPO_VALIDO;
+    }
+
+    public static EnumErros validaDataHoraPreenchida(String data) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault());
+
+        try {
+            if (!DataHoraMascara.isDateTimeValid(data))
+                return DATA_HORA_INVALIDA;
+
+            Date dataHoraAtual = new Date();
+            Date dataHora = dateFormat.parse(data);
+
+            if (dataHora.before(dataHoraAtual))
+                return DATA_HORA_MENOR_QUE_ATUAL;
+
+            return SEM_ERRO;
+        }
+         catch (ParseException e) {
+            return ERRO;
+        }
+    }
+
+    public static EnumErros validaFinalizarViagem(String data) throws ParseException {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault());
+
+        Date dataHoraAtual = new Date();
+        Date dataHora = dateFormat.parse(data);
+
+        if (dataHora.before(dataHoraAtual))
+            return FINALIZANDO_VIAGEM_ANTES;
+
+        return SEM_ERRO;
     }
 }

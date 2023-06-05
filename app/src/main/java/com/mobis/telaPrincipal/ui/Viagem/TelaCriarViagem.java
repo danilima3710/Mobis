@@ -2,8 +2,15 @@ package com.mobis.telaPrincipal.ui.Viagem;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -19,14 +26,19 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.mobis.R;
-import com.mobis.apresentaMensagem.ApresentaMensagem;
+import com.mobis.adapter.ObservacaoListaAdapter;
+import com.mobis.adapter.PassageiroListaAdapter;
+import com.mobis.mascaras.DataHoraMascara;
+import com.mobis.mascaras.RealMascara;
 import com.mobis.models.Passageiro;
 import com.mobis.models.Viagem;
 import com.mobis.trataError.TrataErroCamposPreenchidos;
 import com.mobis.trataError.TrataErroTelaCriarViagem;
 import com.mobis.validacoes.ValidaCadastroViagem;
 
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -36,11 +48,19 @@ public class TelaCriarViagem extends AppCompatActivity {
     private EditText txtDataHora;
     private EditText txtOrigem;
     private EditText txtDestino;
+    private EditText txtValorPassageiro;
     private EditText txtObservacao;
 
     //TextView
     private TextView textAdicionarPassageiro;
     private TextView textAdicionarObservacao;
+
+    //RecyclerView
+    private RecyclerView recyclerPassageiro;
+    private RecyclerView recyclerObservacao;
+    private RecyclerView.LayoutManager layoutManagerPassageiro;
+    private RecyclerView.LayoutManager layoutManagerObservacao;
+
 
     //Outros
     private AutoCompleteTextView autoCompleteNomePassageiro;
@@ -92,10 +112,65 @@ public class TelaCriarViagem extends AppCompatActivity {
             }
         });
 
+        //Cadastrar viagem
         btnCadastrar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                criarViagem(view);
+                try {
+                    criarViagem(view);
+                } catch (ParseException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+
+        //Remover passageiro
+        recyclerPassageiro.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
+            @Override
+            public boolean onInterceptTouchEvent(@NonNull RecyclerView rv, @NonNull MotionEvent e) {
+                if (e.getAction() == MotionEvent.ACTION_UP) {
+                    View childView = rv.findChildViewUnder(e.getX(), e.getY());
+                    if (childView != null) {
+                        int position = rv.getChildAdapterPosition(childView);
+                        removePassageiro(position);
+                    }
+                }
+                return false;
+            }
+
+            @Override
+            public void onTouchEvent(@NonNull RecyclerView rv, @NonNull MotionEvent e) {
+
+            }
+
+            @Override
+            public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
+
+            }
+        });
+
+        //Remover observação
+        recyclerObservacao.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
+            @Override
+            public boolean onInterceptTouchEvent(@NonNull RecyclerView rv, @NonNull MotionEvent e) {
+                if (e.getAction() == MotionEvent.ACTION_UP) {
+                    View childView = rv.findChildViewUnder(e.getX(), e.getY());
+                    if (childView != null) {
+                        int position = rv.getChildAdapterPosition(childView);
+                        removeObservacao(position);
+                    }
+                }
+                return false;
+            }
+
+            @Override
+            public void onTouchEvent(@NonNull RecyclerView rv, @NonNull MotionEvent e) {
+
+            }
+
+            @Override
+            public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
+
             }
         });
     }
@@ -113,10 +188,17 @@ public class TelaCriarViagem extends AppCompatActivity {
         textAdicionarObservacao = findViewById(R.id.textAdicionarObservacao);
         txtObservacao           = findViewById(R.id.txt_observacao         );
         txtDataHora             = findViewById(R.id.txt_data);
+        txtValorPassageiro      = findViewById(R.id.txt_valor_passageiro   );
 
         //TextView
         txtOrigem  = findViewById(R.id.txt_endereco_origem );
         txtDestino = findViewById(R.id.txt_endereco_destino);
+
+        //RecyclerView
+        recyclerPassageiro = findViewById(R.id.rcv_passageiro);
+        recyclerObservacao = findViewById(R.id.rcv_observacao);
+        layoutManagerPassageiro = new LinearLayoutManager(this);
+        layoutManagerObservacao = new LinearLayoutManager(this);
 
         //Listas
         passageiroList            = new ArrayList<>();
@@ -128,6 +210,9 @@ public class TelaCriarViagem extends AppCompatActivity {
         autoCompleteNomePassageiro = findViewById(R.id.autoCompleteNomePassageiro);
         btnCadastrar               = findViewById(R.id.buttonCadastrar           );
 
+        //Adicionar Mascaras
+        txtDataHora.addTextChangedListener(new DataHoraMascara(txtDataHora));
+        txtValorPassageiro.addTextChangedListener(new RealMascara(txtValorPassageiro));
     }
 
     private void buscaPreencheSpinnerPassageiro() {
@@ -169,7 +254,20 @@ public class TelaCriarViagem extends AppCompatActivity {
             passageiroSelecionadoList.add(passageiroAtual);
             passageiroAtual = null;
             autoCompleteNomePassageiro.setText("");
+
+            atualizaRecycleViewPassageiro();
         }
+    }
+
+    private void removePassageiro(int posicao) {
+        passageiroSelecionadoList.remove(posicao);
+        atualizaRecycleViewPassageiro();
+    }
+
+    private void atualizaRecycleViewPassageiro() {
+        recyclerPassageiro.setLayoutManager(layoutManagerPassageiro);
+        PassageiroListaAdapter passageiroListaAdapter = new PassageiroListaAdapter(passageiroSelecionadoList);
+        recyclerPassageiro.setAdapter(passageiroListaAdapter);
     }
 
     private void adicionarObservacao(View view) {
@@ -179,17 +277,34 @@ public class TelaCriarViagem extends AppCompatActivity {
             observacaoList.add(observacao);
             txtObservacao.setText("");
         }
+
+        atualizaRecycleViewObservacao();
     }
 
-    private void criarViagem(View view) {
+    private void removeObservacao(int posicao) {
+        observacaoList.remove(posicao);
+        atualizaRecycleViewObservacao();
+    }
+
+    private void atualizaRecycleViewObservacao() {
+        recyclerObservacao.setLayoutManager(layoutManagerObservacao);
+        ObservacaoListaAdapter observacaoListaAdapter = new ObservacaoListaAdapter(observacaoList);
+        recyclerObservacao.setAdapter(observacaoListaAdapter);
+    }
+
+    private void criarViagem(View view) throws ParseException {
         String dataHora = txtDataHora.getText().toString();
         String origem   = txtOrigem  .getText().toString();
         String destino  = txtDestino .getText().toString();
+        float valorPassageiro = RealMascara.convertStringToFloat(txtValorPassageiro.getText().toString());
 
-        if (TrataErroCamposPreenchidos.trataInconsistenciaInformacao(view, ValidaCadastroViagem.validaCamposPreenchidos(dataHora, origem, destino)))
+        if (TrataErroCamposPreenchidos.trataInconsistenciaInformacao(view, ValidaCadastroViagem.validaCamposPreenchidos(dataHora, origem, destino, valorPassageiro)))
             return;
 
-        Viagem viagem = new Viagem(UUID.randomUUID().toString(), dataHora, origem, destino, 0f, passageiroSelecionadoList, observacaoList, false);
+        if (TrataErroTelaCriarViagem.trataErroDataHora(view, ValidaCadastroViagem.validaDataHoraPreenchida(dataHora)))
+            return;
+
+        Viagem viagem = new Viagem(UUID.randomUUID().toString(), dataHora, origem, destino, valorPassageiro, passageiroSelecionadoList, observacaoList, false);
         viagem.setIdUsuario(FirebaseAuth.getInstance().getCurrentUser().getUid());
 
         TrataErroTelaCriarViagem.trataErroCadastrar(view, viagem.salvar());

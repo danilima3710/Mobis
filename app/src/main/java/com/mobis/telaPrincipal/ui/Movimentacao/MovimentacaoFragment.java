@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -22,11 +23,18 @@ import com.mobis.R;
 import com.mobis.adapter.MovimentacaoAdapter;
 import com.mobis.adapter.PassageiroAdapter;
 import com.mobis.databinding.FragmentMovimentacaoBinding;
+import com.mobis.login.TelaLogin;
+import com.mobis.mascaras.DataMascara;
 import com.mobis.models.Movimentacao;
 import com.mobis.models.Passageiro;
+import com.mobis.telaPrincipal.ui.Passageiro.TelaPassageiro;
 import com.mobis.telaPrincipal.ui.Viagem.TelaCriarViagem;
 
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 public class MovimentacaoFragment extends Fragment {
@@ -41,11 +49,29 @@ public class MovimentacaoFragment extends Fragment {
 
         iniciarComponentes();
 
+        binding.fabExit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FirebaseAuth.getInstance().signOut();
+                Intent intent = new Intent(getActivity(), TelaLogin.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+                getActivity().finish();
+            }
+        });
+
         binding.fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), TelaCriarMovimentacao.class);
                 startActivity(intent);
+            }
+        });
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+                abrirTelaMovimentacao(position);
             }
         });
 
@@ -58,6 +84,12 @@ public class MovimentacaoFragment extends Fragment {
         movimentacaoList = new ArrayList<>();
 
         buscaPreencheRecycleView();
+    }
+
+    private void abrirTelaMovimentacao(int posicao) {
+        Intent intent = new Intent(getActivity(), TelaMovimentacao.class);
+        intent.putExtra("Movimentacao", movimentacaoList.get(posicao));
+        startActivity(intent);
     }
 
     @Override
@@ -90,6 +122,9 @@ public class MovimentacaoFragment extends Fragment {
                         movimentacaoList.add(movimentacao);
                 }
 
+                Collections.sort(movimentacaoList, comparator);
+                movimentacaoList.sort(comparator);
+
                 escondeCampos();
 
                 MovimentacaoAdapter movimentacaoAdapter = new MovimentacaoAdapter(getContext(), R.layout.item_movimentacao, movimentacaoList);
@@ -112,4 +147,19 @@ public class MovimentacaoFragment extends Fragment {
             listView.setVisibility(View.VISIBLE);
         }
     }
+
+    Comparator<Movimentacao> comparator = new Comparator<Movimentacao>() {
+        @Override
+        public int compare(Movimentacao movimentacao1, Movimentacao movimentacao2) {
+            try {
+                Date data1 = DataMascara.convertStringToDate(movimentacao1.getDataMovimentacao());
+                Date data2 = DataMascara.convertStringToDate(movimentacao2.getDataMovimentacao());
+
+                return data2.compareTo(data1);
+
+            } catch (ParseException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    };
 }

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".telaPrincipal.ui.Passageiro.TelaPassageiro">
+
+    <EditText
+        android:id="@+id/txt_nome_consulta"
+        style="@style/edit_login"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:hint="Nome"
+        android:layout_marginTop="10dp"
+        tools:ignore="MissingConstraints"></EditText>
+
+    <EditText
+        android:id="@+id/txt_telefone_consulta"
+        style="@style/edit_login"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:hint="Telefone"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txt_nome_consulta"
+        tools:ignore="MissingConstraints"></EditText>
+
+    <Spinner
+        android:id="@+id/spn_sexo_consulta"
+        style="@style/text_spinner"
+        android:drawableRight="@drawable/ic_arrow_down"
+        android:layout_width="310dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="10dp"
+        app:layout_constraintStart_toStartOf="@+id/txt_telefone_consulta"
+        app:layout_constraintEnd_toEndOf="@+id/txt_telefone_consulta"
+        app:layout_constraintTop_toBottomOf="@+id/txt_telefone_consulta"
+        android:background="@drawable/border_spinner"
+        ></Spinner>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/button_editar_passageiro"
+        style="@style/button_editar_remover"
+        android:text="Editar"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/txt_nome_consulta"
+        android:layout_marginBottom="20dp"
+        tools:ignore="MissingConstraints"
+        />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/button_remover_passageiro"
+        style="@style/button_editar_remover"
+        android:text="Remover"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/txt_nome_consulta"
+        android:layout_marginBottom="20dp"
+        tools:ignore="MissingConstraints"
+        />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

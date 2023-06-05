@@ -11,6 +11,7 @@
     <string name="menu_passageiro">Passageiro</string>
     <string name="menu_movimentacao">Movimentação</string>
     <string name="menu_viagem">Viagem</string>
+    <string name="menu_relatorio">Relatório de Gastos</string>
     <string name="menu_configuracao">Configuração</string>
     <string name="menu_sair">Sair</string>
     <string name="title_activity_tela_principal">TelaPrincipal</string>

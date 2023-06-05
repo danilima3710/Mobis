@@ -6,9 +6,12 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.io.Serializable;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-public class Viagem extends ModelPadrao{
+public class Viagem extends ModelPadrao implements Serializable {
     String id;
     String dataHora;
     String enderecoOrigem;
@@ -100,6 +103,35 @@ public class Viagem extends ModelPadrao{
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
 
         Task task = reference.child("Viagem").child(id.toString()).setValue(this);
+
+        return task.isSuccessful();
+    }
+
+    public boolean editar() {
+        DatabaseReference registroRef = FirebaseDatabase.getInstance().getReference().child("Viagem").child(id);
+
+        Map<String, Object> atualizacoes = new HashMap<>();
+        atualizacoes.put("dataHora"      , dataHora      );
+        atualizacoes.put("enderecoFim"   , enderecoFim   );
+        atualizacoes.put("enderecoOrigem", enderecoOrigem);
+        atualizacoes.put("observacoes"   , observacoes   );
+        atualizacoes.put("passageiros"   , passageiros   );
+
+        Task task = registroRef.updateChildren(atualizacoes);
+
+        return task.isSuccessful();
+    }
+
+    public boolean remover() {
+        DatabaseReference registroRef = FirebaseDatabase.getInstance().getReference().child("Viagem").child(id);
+        Task task = registroRef.removeValue();
+
+        return task.isSuccessful();
+    }
+
+    public boolean finalizar() {
+        DatabaseReference registroRef = FirebaseDatabase.getInstance().getReference().child("Viagem").child(id);
+        Task task = registroRef.child("finalizado").setValue(true);
 
         return task.isSuccessful();
     }

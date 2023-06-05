@@ -15,7 +15,7 @@
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
         android:hint="Nome"
-        android:layout_marginTop="600px"
+        android:layout_marginTop="10dp"
         tools:ignore="MissingConstraints"></EditText>
 
     <EditText
@@ -30,6 +30,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txt_nome"
+        android:inputType="number"
         tools:ignore="MissingConstraints"></EditText>
 
     <Spinner

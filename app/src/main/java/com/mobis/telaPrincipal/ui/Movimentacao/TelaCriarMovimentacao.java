@@ -13,12 +13,15 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.mobis.R;
 import com.mobis.constantes.ItensSpinner;
 import com.mobis.enumeradores.EnumMovimentacao;
+import com.mobis.mascaras.DataMascara;
+import com.mobis.mascaras.RealMascara;
 import com.mobis.models.Movimentacao;
 import com.mobis.trataError.TrataErroCamposPreenchidos;
 import com.mobis.trataError.TrataErroTelaCriarMovimentacao;
 import com.mobis.trataError.TrataErroTelaCriarViagem;
 import com.mobis.validacoes.ValidaCadastroMovimentacao;
 
+import java.text.ParseException;
 import java.util.UUID;
 
 public class TelaCriarMovimentacao extends AppCompatActivity {
@@ -39,7 +42,11 @@ public class TelaCriarMovimentacao extends AppCompatActivity {
         btnCadastrar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                criarMovimentacao(view);
+                try {
+                    criarMovimentacao(view);
+                } catch (ParseException e) {
+                    throw new RuntimeException(e);
+                }
             }
         });
     }
@@ -51,6 +58,10 @@ public class TelaCriarMovimentacao extends AppCompatActivity {
         txtDescricao        = findViewById(R.id.txt_descricao_movimentacao);
         btnCadastrar        = findViewById(R.id.buttonCadastrar           );
 
+        //Adicionar Mascaras
+        txtData.addTextChangedListener(new DataMascara(txtData));
+        txtValor.addTextChangedListener(new RealMascara(txtValor));
+
         inserirValorSpinner();
     }
 
@@ -60,14 +71,17 @@ public class TelaCriarMovimentacao extends AppCompatActivity {
         spinnerMovimentacao.setAdapter(adapter);
     }
 
-    private void criarMovimentacao(View view) {
+    private void criarMovimentacao(View view) throws ParseException {
         String data = txtData.getText().toString();
         String descricao = txtDescricao.getText().toString();
-        float valor = Float.parseFloat(txtValor.getText().toString());
+        float valor = RealMascara.convertStringToFloat(txtValor.getText().toString());
         EnumMovimentacao.TipoMovimentacao tipoMovimentacao = EnumMovimentacao.stringToEnum(spinnerMovimentacao.getSelectedItem().toString());
 
         if (TrataErroCamposPreenchidos.trataInconsistenciaInformacao(view, ValidaCadastroMovimentacao.validaCamposPreenchidos(data, valor, descricao, tipoMovimentacao)))
             return;
+
+        if (TrataErroTelaCriarMovimentacao.trataErroData(view, ValidaCadastroMovimentacao.validaDataPreenchida(data)))
+            return;;
 
         Movimentacao movimentacao = new Movimentacao(UUID.randomUUID().toString(), FirebaseAuth.getInstance().getCurrentUser().getUid(), data, valor, descricao, tipoMovimentacao);
 

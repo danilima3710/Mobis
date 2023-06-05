@@ -9,11 +9,11 @@ public enum EnumSexo {
 
     public static EnumSexo stringToEnum(String opcao) {
         switch (opcao) {
-            case "Masculino": return MASCULINO;
-            case "Feminino": return FEMININO;
+            case "Masculino" : return MASCULINO;
+            case "Feminino"  : return FEMININO;
             case "Indefinido": return INDEFINIDO;
-            case "Outro": return OUTRO;
-            default: return NAO_RESPONDER;
+            case "Outro"     : return OUTRO;
+            default          : return NAO_RESPONDER;
         }
     }
 }

@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+
+<androidx.core.widget.NestedScrollView xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+<androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".telaPrincipal.ui.Viagem.TelaCriarViagem">
@@ -12,7 +17,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="44dp"
-        android:hint="Data"
+        android:hint="Data e hora"
+        android:inputType="number"
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
         app:layout_constraintTop_toTopOf="parent"
@@ -48,28 +54,52 @@
         app:layout_constraintTop_toBottomOf="@+id/txt_endereco_origem"
         tools:ignore="MissingConstraints"></EditText>
 
+    <EditText
+        android:id="@+id/txt_valor_passageiro"
+        style="@style/edit_login"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:hint="Preço por passageiro"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:inputType="number"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txt_endereco_destino"
+        tools:ignore="MissingConstraints"></EditText>
+
     <AutoCompleteTextView
         android:id="@+id/autoCompleteNomePassageiro"
         android:hint="Selecione um passageiro"
         android:layout_width="310dp"
         android:layout_height="60dp"
         android:layout_marginTop="10dp"
-        app:layout_constraintStart_toStartOf="@+id/txt_endereco_destino"
-        app:layout_constraintEnd_toEndOf="@+id/txt_endereco_destino"
-        app:layout_constraintTop_toBottomOf="@+id/txt_endereco_destino"
+        app:layout_constraintStart_toStartOf="@+id/txt_valor_passageiro"
+        app:layout_constraintEnd_toEndOf="@+id/txt_valor_passageiro"
+        app:layout_constraintTop_toBottomOf="@+id/txt_valor_passageiro"
         android:background="@drawable/border_spinner"
         tools:ignore="MissingConstraints" />
 
     <TextView
         android:id="@+id/textPassageiro"
-        android:layout_width="141dp"
-        android:layout_height="40dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:textSize="15sp"
         android:text="Adicionar Passageiro"
         android:paddingTop="10dp"
         app:layout_constraintTop_toBottomOf="@+id/autoCompleteNomePassageiro"
         app:layout_constraintEnd_toEndOf="@+id/autoCompleteNomePassageiro"
         />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rcv_passageiro"
+        android:layout_width="331dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        app:layout_constraintStart_toStartOf="@+id/txt_endereco_destino"
+        app:layout_constraintTop_toBottomOf="@+id/textPassageiro"
+        tools:ignore="MissingConstraints" />
 
     <EditText
         android:id="@+id/txt_observacao"
@@ -82,19 +112,28 @@
         android:paddingRight="20dp"
         app:layout_constraintStart_toStartOf="@+id/textPassageiro"
         app:layout_constraintEnd_toEndOf="@+id/textPassageiro"
-        app:layout_constraintTop_toBottomOf="@+id/textPassageiro"
+        app:layout_constraintTop_toBottomOf="@+id/rcv_passageiro"
         tools:ignore="MissingConstraints"></EditText>
 
     <TextView
         android:id="@+id/textAdicionarObservacao"
-        android:layout_width="145dp"
-        android:layout_height="40dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:textSize="15sp"
         android:text="Adicionar Observação"
         android:paddingTop="10dp"
         app:layout_constraintTop_toBottomOf="@+id/txt_observacao"
         app:layout_constraintEnd_toEndOf="@+id/autoCompleteNomePassageiro"
         />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rcv_observacao"
+        android:layout_height="wrap_content"
+        android:layout_width="310dp"
+        android:layout_marginTop="10dp"
+        app:layout_constraintTop_toBottomOf="@+id/textAdicionarObservacao"
+        app:layout_constraintStart_toStartOf="@+id/txt_endereco_destino"
+        tools:ignore="MissingConstraints" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/buttonCadastrar"
@@ -104,11 +143,12 @@
         android:textStyle="bold"
         android:textAllCaps="false"
         android:textColor="@color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="20dp"
         app:layout_constraintStart_toStartOf="@+id/autoCompleteNomePassageiro"
         app:layout_constraintEnd_toEndOf="@+id/autoCompleteNomePassageiro"
-        android:layout_marginBottom="20dp"
+        app:layout_constraintTop_toBottomOf="@+id/rcv_observacao"
         tools:ignore="MissingConstraints"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>

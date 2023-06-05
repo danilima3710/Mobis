@@ -20,8 +20,10 @@ import com.mobis.apresentaMensagem.ApresentaMensagem;
 import com.mobis.constantes.ItensSpinner;
 import com.mobis.databinding.ActivityTelaPrincipalBinding;
 import com.mobis.enumeradores.EnumSexo;
+import com.mobis.mascaras.TelefoneMascara;
 import com.mobis.models.Passageiro;
 import com.mobis.trataError.TrataErroCamposPreenchidos;
+import com.mobis.trataError.TrataErroTelaCriarPassageiro;
 import com.mobis.validacoes.ValidaCadastroPassageiro;
 
 import java.util.UUID;
@@ -54,6 +56,8 @@ public class TelaCriarPassageiro extends AppCompatActivity {
         txtTelefone  = findViewById(R.id.txt_telefone   );
         btnCadastrar = findViewById(R.id.buttonCadastrar);
 
+        txtTelefone.addTextChangedListener(new TelefoneMascara(txtTelefone));
+
         inserirValorSpinner();
     }
 
@@ -72,10 +76,8 @@ public class TelaCriarPassageiro extends AppCompatActivity {
 
         Passageiro passageiro = new Passageiro(UUID.randomUUID().toString(), sNome, sTelefone, EnumSexo.stringToEnum(spinnerSexo.getSelectedItem().toString()));
         passageiro.setIdUsuario(FirebaseAuth.getInstance().getCurrentUser().getUid());
-        if (!passageiro.salvar())
-            ApresentaMensagem.ApresentaMensagemRapida(view, "Erro ao criar um novo passageiro");
-        else
-            ApresentaMensagem.ApresentaMensagemRapida(view, "Passageiro cadastrado com sucesso");
+
+        TrataErroTelaCriarPassageiro.trataErroCadastrar(view, passageiro.salvar());
 
         abrirTelaPassageiro();
     }

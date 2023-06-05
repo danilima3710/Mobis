@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -20,7 +21,9 @@ import com.google.firebase.database.ValueEventListener;
 import com.mobis.R;
 import com.mobis.adapter.PassageiroAdapter;
 import com.mobis.databinding.FragmentPassageiroBinding;
+import com.mobis.login.TelaLogin;
 import com.mobis.models.Passageiro;
+import com.mobis.telaPrincipal.ui.Movimentacao.TelaMovimentacao;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,11 +40,29 @@ public class PassageiroFragment extends Fragment {
 
         iniciaComponentes();
 
+        binding.fabExit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FirebaseAuth.getInstance().signOut();
+                Intent intent = new Intent(getActivity(), TelaLogin.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+                getActivity().finish();
+            }
+        });
+
         binding.fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), TelaCriarPassageiro.class);
                 startActivity(intent);
+            }
+        });
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+                abrirTelaPassageiro(position);
             }
         });
 
@@ -54,6 +75,12 @@ public class PassageiroFragment extends Fragment {
         passageiroList = new ArrayList<>();
 
         buscaPreencheRecycleView();
+    }
+
+    private void abrirTelaPassageiro(int posicao) {
+        Intent intent = new Intent(getActivity(), TelaPassageiro.class);
+        intent.putExtra("Passageiro", passageiroList.get(posicao));
+        startActivity(intent);
     }
 
     @Override

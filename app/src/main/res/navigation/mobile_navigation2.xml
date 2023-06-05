@@ -22,4 +22,10 @@
         android:name="com.mobis.telaPrincipal.ui.Viagem.ViagemFragment"
         android:label="@string/menu_viagem"
         tools:layout="@layout/fragment_viagem" />
+
+    <fragment
+        android:id="@+id/nav_relatorio"
+        android:name="com.mobis.telaPrincipal.ui.Relatorio.RelatorioFragment"
+        android:label="@string/menu_relatorio"
+        tools:layout="@layout/fragment_relatorio" />
 </navigation>

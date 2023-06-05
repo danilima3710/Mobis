@@ -2,15 +2,26 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/ic_launcher_round"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/Theme.Mobis"
         tools:targetApi="31">
+        <activity
+            android:name=".telaPrincipal.ui.Viagem.TelaViagem"
+            android:exported="false" />
+        <activity
+            android:name=".telaPrincipal.ui.Movimentacao.TelaMovimentacao"
+            android:exported="false" />
+        <activity
+            android:name=".telaPrincipal.ui.Passageiro.TelaPassageiro"
+            android:exported="false" />
         <activity
             android:name=".telaPrincipal.ui.Movimentacao.TelaCriarMovimentacao"
             android:exported="false" />
